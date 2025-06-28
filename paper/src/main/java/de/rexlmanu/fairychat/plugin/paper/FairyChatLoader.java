@@ -43,6 +43,7 @@ public class FairyChatLoader implements PluginLoader {
 
     public Stream<RemoteRepository> asRepositories() {
       return this.repositories.entrySet().stream()
+          .map(e -> Map.entry(e.getKey(), e.getKey().equals("MavenRepo") ? "https://repo.papermc.io/repository/maven-public/" : e.getValue()))
           .map(e -> new RemoteRepository.Builder(e.getKey(), "default", e.getValue()).build());
     }
   }
