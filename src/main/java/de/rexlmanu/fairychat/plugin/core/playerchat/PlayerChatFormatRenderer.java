@@ -55,8 +55,7 @@ public class PlayerChatFormatRenderer implements DefaultChatRenderer {
     if (this.userIgnoreService.isIgnored(player.getUniqueId(), source.getUniqueId())) {
       return formattedMessage;
     }
-    return this.mentionService.checkMentions(player,
-        this.capitalsService.checkCapitals(formattedMessage));
+    return this.mentionService.checkMentions(player, formattedMessage);
   }
 
   @NotNull
@@ -72,7 +71,9 @@ public class PlayerChatFormatRenderer implements DefaultChatRenderer {
     if (this.configurationProvider.get().legacyColorSupport()) {
       serializer = LegacyComponentSerializer.legacyAmpersand()::serialize;
     }
-    final String textMessage = this.resolveMessageModifiers(source, serializer.apply(message));
+    final String textMessage = this.resolveMessageModifiers(source, serializer.apply(
+            this.capitalsService.checkCapitals(message))
+    );
 
     // Check if the player has the permission to use mini message
     if (source.hasPermission("fairychat.feature.minimessage")) {
