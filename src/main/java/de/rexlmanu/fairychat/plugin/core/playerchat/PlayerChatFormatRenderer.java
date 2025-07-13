@@ -72,7 +72,7 @@ public class PlayerChatFormatRenderer implements DefaultChatRenderer {
       serializer = LegacyComponentSerializer.legacyAmpersand()::serialize;
     }
     final String textMessage = this.resolveMessageModifiers(source, serializer.apply(
-            this.capitalsService.checkCapitals(message))
+      source.hasPermission("fairychat.bypass.capitals") ? message : this.capitalsService.checkCapitals(message))
     );
 
     // Check if the player has the permission to use mini message
