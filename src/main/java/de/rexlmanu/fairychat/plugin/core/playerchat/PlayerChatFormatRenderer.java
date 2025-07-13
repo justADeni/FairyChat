@@ -5,6 +5,7 @@ import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import de.rexlmanu.fairychat.plugin.configuration.PluginConfiguration;
+import de.rexlmanu.fairychat.plugin.core.capitals.CapitalsService;
 import de.rexlmanu.fairychat.plugin.core.ignore.UserIgnoreService;
 import de.rexlmanu.fairychat.plugin.core.mentions.MentionService;
 import de.rexlmanu.fairychat.plugin.integration.IntegrationRegistry;
@@ -33,6 +34,7 @@ public class PlayerChatFormatRenderer implements DefaultChatRenderer {
   private final MiniMessage miniMessage;
   private final PermissionProvider permissionProvider;
   private final MentionService mentionService;
+  private final CapitalsService capitalsService;
   private final IntegrationRegistry registry;
   private final UserIgnoreService userIgnoreService;
 
@@ -53,7 +55,8 @@ public class PlayerChatFormatRenderer implements DefaultChatRenderer {
     if (this.userIgnoreService.isIgnored(player.getUniqueId(), source.getUniqueId())) {
       return formattedMessage;
     }
-    return this.mentionService.checkMentions(player, formattedMessage);
+    return this.mentionService.checkMentions(player,
+        this.capitalsService.checkCapitals(formattedMessage));
   }
 
   @NotNull
